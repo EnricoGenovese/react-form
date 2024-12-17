@@ -1,18 +1,19 @@
 import { useState } from "react";
 import posts from "../data/posts";
 
-
+let newId = 0;
 
 export default function PostForm() {
 
-
     const newPost = {
-        id: posts.reduce((curr, next) => curr.id < next.id ? next : curr).id + 1,
+        id: newId,
         title: "",
         content: "",
     }
     const [post, setPost] = useState(newPost);
     const [postsList, setPostsList] = useState([...posts]);
+
+    newId = postsList.reduce((curr, next) => curr.id < next.id ? next : curr).id + 1
 
     function handlePost(event) {
         // const newPost = { ...post };
@@ -28,7 +29,7 @@ export default function PostForm() {
         // const newPostsList = [...postsList];
         // newPostsList.push(post)
 
-        setPostsList([...postsList, newPost]);
+        setPostsList(postsList => [...postsList, newPost]);
         setPost(newPost);
 
     }
@@ -40,14 +41,6 @@ export default function PostForm() {
 
     return (
         <>
-            {postsList.map((post, id) =>
-                <div className="container my-3" key={id}>
-                    <h3>{post.title}</h3>
-                    <p>{post.content}</p>
-                    <div className="btn btn-danger"
-                        onClick={() => { deletePost(post.id) }}>Cancella</div>
-                </div>
-            )}
             <section className="my-5">
                 <h2>Inserisci un nuovo post</h2>
                 <form onSubmit={handleSubmit}>
@@ -89,6 +82,14 @@ export default function PostForm() {
                     </button>
                 </form>
             </section>
+            {postsList.map((post, id) =>
+                <div className="container my-3" key={id}>
+                    <h3>{post.title}</h3>
+                    <p>{post.content}</p>
+                    <div className="btn btn-danger"
+                        onClick={() => { deletePost(post.id) }}>Cancella</div>
+                </div>
+            )}
         </>
     )
 }
