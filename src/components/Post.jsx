@@ -1,3 +1,6 @@
+
+
+
 export default function Post({ title, content }) {
     return (
         <div className="container my-3">
